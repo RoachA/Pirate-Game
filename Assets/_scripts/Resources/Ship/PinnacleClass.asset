@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b44a13589e5b94946a620d577b82da97, type: 3}
+  m_Name: PinnacleClass
+  m_EditorClassIdentifier: 
+  ShipDefinition:
+    ShipName: Pinnacle Class
+    ShipDescription: 'A type of small sailing vessel used primarily for coastal trade,
+      reconnaissance, or as auxiliary support in larger fleets during the Age of
+      Sail. Pinnacles were typically fast and nimble, featuring a single or dual
+      masts with triangular lateen sails that allowed for greater maneuverability
+      in various wind conditions. '
+    Stats:
+      Prevalence: 2
+      Size: 2
+      Maneuverability: 45
+      Durability: 100
+      BaseSpeed: 25
+      MaxCannons: 6
+      MaxCrew: 40
+      MinCrew: 10
+      IdealCrew: 30
+      Cargo: 50
+      BasePrice: 1500

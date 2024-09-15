@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca1d8777549c2994c9023c8202f5da24, type: 3}
+  m_Name: AvailableShipsContainer
+  m_EditorClassIdentifier: 
+  AvailableShips:
+  - {fileID: 11400000, guid: 82e7b15514013c949a1d9810f05662c8, type: 2}

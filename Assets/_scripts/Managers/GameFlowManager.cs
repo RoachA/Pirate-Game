@@ -7,6 +7,5 @@ public class GameFlowManager : MonoBehaviour
 {
     private void Awake()
     {
-        Application.targetFrameRate = 120;
     }
 }
