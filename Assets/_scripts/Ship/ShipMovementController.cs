@@ -40,6 +40,7 @@ namespace Game.Ship
         private float MaxSpeedBase = 10f;
         private Ship _ship;
         private GameObject _shipBodyMesh;
+        private ShipAi _shipAi;
 
         [Header("Wind Debug")]
         [Range(0, 360)]
@@ -64,6 +65,9 @@ namespace Game.Ship
         {
             _ship = GetComponent<Ship>();
             ApplyBaseStats();
+
+            if (isPlayer == false)
+                _shipAi = GetComponent<ShipAi>();
         }
 
         private void ApplyBaseStats()
@@ -84,13 +88,29 @@ namespace Game.Ship
 
         private void FixedUpdate()
         {
-            _inputDirection = inputManager.KeyboardInputDirectionVector;
+            SetInputSource();
 
             //need to get these work for AI too.
             MoveShip();
             RotateShip();
             ApplyWind();
             ApplySimpleBuoyancy();
+        }
+
+        private void SetInputSource()
+        {
+            if (isPlayer)
+                _inputDirection = inputManager.KeyboardInputDirectionVector;
+            else
+            {
+                if (_shipAi == null)
+                {
+                    UnityEngine.Debug.LogError("No ai was found to feed the navigator!");
+                    return;
+                }
+
+                _inputDirection = _shipAi.InputDirectionVector;
+            }
         }
 
         private void RotateShip()
@@ -144,7 +164,8 @@ namespace Game.Ship
             float similarity = Mathf.InverseLerp(180, 0, absDifference);
 
 
-            sailMat.color = Color.Lerp(Color.red, Color.green, similarity);
+            if (isPlayer)
+                sailMat.color = Color.Lerp(Color.red, Color.green, similarity);
 
             acceleration = (similarity * windPower * 1.5f) * BaseSpeed;
             acceleration += 25f; //default wind effect
