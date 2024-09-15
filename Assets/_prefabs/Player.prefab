@@ -214,6 +214,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: defe55b0b13b3e344b55e579c8d38407, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _typeDataContainer: {fileID: 11400000, guid: 82e7b15514013c949a1d9810f05662c8, type: 2}
 --- !u!114 &1550850224909504038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,17 +228,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayer: 1
-  BaseAcceleration: 25
+  BaseSpeed: 15
   BaseManeuverability: 45
-  MaxSpeedBase: 35
   inputManager: {fileID: 0}
   rigidBody: {fileID: 1550850224909504041}
   acceleration: 25
-  rotationAcceleration: 10
-  turnSpeed: 25
+  torqueAcceleration: 10
   deceleration: 0.01
   rotationDeceleration: 0.01
-  _currentTurnSpeed: 0
   windAngle: 0
   windPower: 1
   sailMat: {fileID: 2100000, guid: 323cfebace839ee479c1bb8461b9e636, type: 2}

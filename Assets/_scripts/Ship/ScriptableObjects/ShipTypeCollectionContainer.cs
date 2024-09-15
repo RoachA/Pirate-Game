@@ -6,10 +6,10 @@ using UnityEditor;
 
 namespace Game.Ship
 {
-    [CreateAssetMenu(fileName = "ShipCollectionContainer", menuName = "DataContainers/ShipCollectionContainer", order = 1)]
-    public class ShipCollectionContainer : ScriptableObject
+    [CreateAssetMenu(fileName = "ShipTypeCollectionContainer", menuName = "DataContainers/ShipTypeCollectionContainer", order = 1)]
+    public class ShipTypeCollectionContainer : ScriptableObject
     {
-        [SerializeField] private List<ShipDataContainer> AvailableShips;
+        [SerializeField] private List<ShipTypeDataContainer> AvailableShips;
 
         [Space(15)]
         [ShowInInspector] [ReadOnly]
@@ -27,11 +27,11 @@ namespace Game.Ship
 
                 foreach (string filePath in filePaths)
                 {
-                    ShipDataContainer shipData = AssetDatabase.LoadAssetAtPath<ShipDataContainer>(filePath);
-                    if (shipData != null)
+                    ShipTypeDataContainer shipTypeData = AssetDatabase.LoadAssetAtPath<ShipTypeDataContainer>(filePath);
+                    if (shipTypeData != null)
                     {
-                        AvailableShips.Add(shipData);
-                        UnityEngine.Debug.Log($"Loaded ShipData: {shipData.name}");
+                        AvailableShips.Add(shipTypeData);
+                        UnityEngine.Debug.Log($"Loaded ShipTypeData: {shipTypeData.name}");
                     }
                 }
             }

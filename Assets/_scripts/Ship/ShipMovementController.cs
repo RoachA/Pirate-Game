@@ -15,28 +15,31 @@ namespace Game.Ship
     Use the direction vector for rotation control (i.e., the ship "points" towards a desired direction).
     Move the ship gradually forward based on its current facing direction (forward vector).
     Implement smooth turning, acceleration, and deceleration.*/
+    [RequireComponent(typeof(Ship))]
     public class ShipMovementController : MonoBehaviour
     {
         [SerializeField] private bool isPlayer;
 
         [Header("Stats")]
-        public float BaseAcceleration = 15f;
+        public float BaseSpeed = 15f;
         public float BaseManeuverability = 15f;
-        public float MaxSpeedBase = 10f; // Maximum speed of the ship
 
         [SerializeField] private InputManager inputManager;
         [Space(10)]
         [SerializeField] private Rigidbody rigidBody;
-        public float acceleration = 5f; // How fast the ship accelerates
-        public float rotationAcceleration = 10f;
-        public float turnSpeed = 50f; // How fast the ship turns
-        public float deceleration = 2f; // How fast the ship slows down
-        public float rotationDeceleration = 3f;
+
+        public float acceleration = 5f;
+        public float torqueAcceleration = 10f;
+
+        public float deceleration = 0.01f;
+        public float rotationDeceleration = 0.01f;
+
+        private float _currentTurnSpeed = 0f;
         private Vector2 _inputDirection; // Direction vector from keyboard input
-        public float _currentTurnSpeed = 0f;
-
         private Vector2 _maxRoll = new Vector2(-15, 15);
-
+        private float MaxSpeedBase = 10f;
+        private Ship _ship;
+        private GameObject _shipBodyMesh;
 
         [Header("Wind Debug")]
         [Range(0, 360)]
@@ -59,12 +62,19 @@ namespace Game.Ship
 
         private void Start()
         {
+            _ship = GetComponent<Ship>();
             ApplyBaseStats();
         }
 
         private void ApplyBaseStats()
         {
-            acceleration = BaseAcceleration;
+            var stats = _ship.ShipTypeData.Stats;
+
+            BaseSpeed = stats.BaseSpeed;
+            acceleration = BaseSpeed;
+            BaseManeuverability = stats.BaseManeuverability;
+            MaxSpeedBase = BaseSpeed * 3; // would change later.
+            _shipBodyMesh = _ship.ShipBody;
         }
 
         public WindData GetWindData()
@@ -80,13 +90,14 @@ namespace Game.Ship
             MoveShip();
             RotateShip();
             ApplyWind();
+            ApplySimpleBuoyancy();
         }
 
         private void RotateShip()
         {
-            float targetTurnSpeed = _inputDirection.x * turnSpeed;
+            float targetTurnSpeed = _inputDirection.x * BaseManeuverability;
 
-            _currentTurnSpeed = Mathf.MoveTowards(_currentTurnSpeed, targetTurnSpeed, rotationAcceleration * Time.fixedDeltaTime);
+            _currentTurnSpeed = Mathf.MoveTowards(_currentTurnSpeed, targetTurnSpeed, torqueAcceleration * Time.fixedDeltaTime);
 
             if (_inputDirection != Vector2.zero)
             {
@@ -135,11 +146,27 @@ namespace Game.Ship
 
             sailMat.color = Color.Lerp(Color.red, Color.green, similarity);
 
-            acceleration = (similarity * windPower) * BaseAcceleration;
-            acceleration += 10f; //min acceleration when zero wind.
+            acceleration = (similarity * windPower * 1.5f) * BaseSpeed;
+            acceleration += 25f; //default wind effect
 
-            rotationAcceleration = (similarity * windPower) * BaseManeuverability;
-            rotationAcceleration += 8f; //min acceleration when zero wind.
+            torqueAcceleration = (similarity * windPower * 1.5f) * BaseManeuverability;
+            torqueAcceleration += 15f; //default wind effect
+        }
+
+        [SerializeField] private float BuoyancyTime;
+        [SerializeField] private float BuoyancyPosScale;
+        [SerializeField] private float BuoyancyRotScale;
+
+        private void ApplySimpleBuoyancy()
+        {
+            var time = Time.time * BuoyancyTime;
+            float noiseValue = Mathf.PerlinNoise(time, 0f);
+
+            float newY = (noiseValue - 0.5f) * BuoyancyPosScale;
+
+            _shipBodyMesh.transform.localPosition = new Vector3(0, newY, 0);
+
+            _shipBodyMesh.transform.localEulerAngles = new Vector3(0, 90, newY * BuoyancyRotScale);
         }
     }
 }

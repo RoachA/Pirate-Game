@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Game.Ship
 {
     [Serializable]
-    public class ShipData
+    public class ShipTypeData
     {
         public string ShipName;
         [Space(10)]
@@ -29,7 +29,7 @@ namespace Game.Ship
         [Range(0, 10)]
         public int Prevalence;
         public ShipSize Size;
-        public int Maneuverability;
+        public int BaseManeuverability;
         public int Durability;
         public int BaseSpeed;
         public int MaxCannons;
